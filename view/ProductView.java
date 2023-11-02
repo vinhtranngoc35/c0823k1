@@ -1,15 +1,18 @@
 package view;
 
 import model.Product;
+import service.CategoryService;
 import service.ProductService;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Scanner;
 
 // lấy data từ người dùng.
 public class ProductView {
     static Scanner sc = new Scanner(System.in);
     static ProductService productService = new ProductService();
+    static CategoryService categoryService = new CategoryService();
 
     public static void printMenu() {
         while (true) {
@@ -49,6 +52,8 @@ public class ProductView {
                 , getString("Nhap ten muon sua")
                 , new BigDecimal(getNumber("Nhap gia"))
                 , getString("Nhap description")
+                , getNumber("Nhap category")
+                ,  getDate("Nhap ngay nhap hang")
         ));
         if(isSuccess){
             System.out.println("Cap nhat Thanh cong");
@@ -59,13 +64,14 @@ public class ProductView {
 
     public static void createProduct() {
         productService.createProduct(new Product(0, getString("Nhap ten san pham"),
-                new BigDecimal(getNumber("Nhap gia")), getString("Nhap mo ta san pham")));
+                new BigDecimal(getNumber("Nhap gia")), getString("Nhap mo ta san pham"),
+                getCategoryId("Nhap category id"), getDate("Nhap ngay nhap hang")));
     }
 
     public static void printProduct() {
-        System.out.println("Id   | Name    | Description| Price");
-        for (var product : productService.getProducts()) {
-            System.out.printf("%x   | %s    | %s    | %f%n", product.getId(), product.getName(), product.getDescription(), product.getPrice());
+        System.out.println("Id   | Name    | Description| Price     | Category");
+        for (var product : productService.getProducts(1)) {
+            System.out.printf("%x   | %s    | %s    | %f     | %s%n", product.getId(), product.getName(), product.getDescription(), product.getPrice(),product.getCategory().getName());
         }
     }
 
@@ -82,8 +88,29 @@ public class ProductView {
 
     }
 
+
     public static String getString(String str) throws IndexOutOfBoundsException {
         System.out.println(str);
         return sc.nextLine();
+    }
+
+
+    public static int getCategoryId(String str){
+        System.out.println("Danh sach category");
+        for (var category: categoryService.findAll()) {
+            System.out.println(category.getId() + ". " + category.getName());
+        }
+        return getNumber(str);
+    }
+
+    public static Date getDate(String str){
+        System.out.println(str);
+        System.out.println("Format yyyy-mm-dd, Example: 2023-03-30");
+        try{
+            return Date.valueOf(sc.nextLine());
+        }catch (Exception e){
+            return getDate(str);
+        }
+
     }
 }

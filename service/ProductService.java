@@ -2,23 +2,30 @@ package service;
 
 import model.Product;
 
+import java.io.*;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 //
 // => lấy thông tin từ người dùng
 // parse data => object model
 // => add vào list data của mình
 public class ProductService {
-    private static final List<Product> products = new ArrayList<>();
+    private static List<Product> products = new ArrayList<>();
+
+    private static CategoryService categoryService = new CategoryService();
+
+
 
     private static int currentId = 0;
 
     static {
-        products.add(new Product(++currentId, "Cafe", new BigDecimal(6_000), "Ngon"));
-        products.add(new Product(++currentId, "Bo huc", new BigDecimal(15_000), "Ngon"));
-        products.add(new Product(++currentId, "Sting", new BigDecimal(10_000), "Ngon"));
+        readData();
     }
 
     public List<Product> getProducts() {
@@ -27,7 +34,9 @@ public class ProductService {
 
     public void createProduct(Product product) {
         product.setId(++currentId);
+        product.setCategory(categoryService.findById(product.getCategoryId()));
         products.add(product);
+        writeFile();
     }
 
     //{id: 1, Name: Cafe Expresso, Description: Cafe rang xay, 12_000}
@@ -45,12 +54,70 @@ public class ProductService {
     }
 
     public boolean deleteProduct(int id) {
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId() == id) {
-                products.remove(i);
-                return true;
-            }
+        var sizeOld = products.size();
+        products = products.stream().filter(e -> e.getId() != id).collect(Collectors.toList());
+        writeFile();
+        return sizeOld != products.size();
+    }
+    public List<Product> findProductByName(String name){
+        return products.stream().filter(e -> e.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
+    }
+    public List<Product> getProducts(int choice) {
+        if(choice == 1){
+            products.sort(Comparator.comparing(Product::getPrice));
         }
-        return false;
+        if(choice == 2){
+            products.sort(Comparator.comparing(Product::getName));
+        }
+        return products;
+    }
+
+    public int findByIndex(int index) throws IOException {
+        if(index < 0) throw new IndexOutOfBoundsException("Khong vi tri nay");
+        int[] ints = new int[2];
+        return 1;
+    }
+
+    private static void readData(){
+        try{
+            File fileWriter = new File("data/data.txt");
+            FileReader fileReader = new FileReader(fileWriter);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line = reader.readLine();
+            while (line != null && !line.equals("")){
+                String[] data = line.split(",");
+                currentId = Integer.parseInt(data[0]);
+                Product product = new Product(
+                        Integer.parseInt(data[0]),
+                        data[1],
+                        new BigDecimal(data[2].trim()),
+                        data[3],
+                        Integer.parseInt(data[4]),
+                        Date.valueOf(data[5])
+                );
+                product.setCategory(categoryService.findById(product.getCategoryId()));
+                products.add(product);
+
+                line = reader.readLine();
+            }
+
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    private static void writeFile(){
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("data/data.txt"));
+            for (var product :products) {
+                writer.write(product.toString());
+                writer.newLine();
+            }
+
+
+            writer.flush();
+            writer.close();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }

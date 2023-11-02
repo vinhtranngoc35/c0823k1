@@ -1,11 +1,7 @@
-import model.*;
 import service.ProductService;
 import view.ProductView;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.*;
 
 public class Demo {
 
