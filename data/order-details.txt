@@ -1,0 +1,2 @@
+1,Cafe,1,2,2,10000,GLASS
+2,Sting,2,2,1,12000,BOTTLE

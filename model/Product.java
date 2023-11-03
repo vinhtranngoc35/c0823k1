@@ -17,6 +17,8 @@ public class Product {
 
     private Date importDate;
 
+    private Unit unit = Unit.GLASS;
+
 
     public Product(int id, String name, BigDecimal price, String description, int categoryId, Date importDate) {
         this.id = id;
@@ -25,6 +27,9 @@ public class Product {
         this.description = description;
         this.categoryId = categoryId;
         this.importDate = importDate;
+    }
+
+    public Product() {
     }
 
     public int getId() {
@@ -61,7 +66,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + price + "," + description + "," + categoryId +","+ importDate;
+        return id + "," + name + "," + price + "," + description + "," + categoryId +","+ importDate + "," +unit;
 
     }
 
@@ -87,5 +92,13 @@ public class Product {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

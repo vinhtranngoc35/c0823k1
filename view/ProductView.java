@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Scanner;
 
+import static ultis.AppUltis.*;
+
 // lấy data từ người dùng.
 public class ProductView {
     static Scanner sc = new Scanner(System.in);
@@ -24,7 +26,7 @@ public class ProductView {
             System.out.println("5. Sap xep");
             System.out.println("6. Tim kiem");
             System.out.println("7. Thoat");
-            int choice = getNumber("Nhap vao lua chon");
+            int choice = getNumber("Nhap vao lua chon", 1, 7);
             switch (choice) {
                 case 1 -> printProduct();
                 case 2 -> createProduct();
@@ -75,24 +77,7 @@ public class ProductView {
         }
     }
 
-    public static int getNumber(String str) throws IndexOutOfBoundsException {
-        System.out.println(str);
-        int num;
-        try {
-            num = Integer.parseInt(sc.nextLine());
-            return num;
-        } catch (Exception e) {
-            System.out.println("Khong dung dinh dang");
-            return getNumber(str);
-        }
 
-    }
-
-
-    public static String getString(String str) throws IndexOutOfBoundsException {
-        System.out.println(str);
-        return sc.nextLine();
-    }
 
 
     public static int getCategoryId(String str){
@@ -103,14 +88,5 @@ public class ProductView {
         return getNumber(str);
     }
 
-    public static Date getDate(String str){
-        System.out.println(str);
-        System.out.println("Format yyyy-mm-dd, Example: 2023-03-30");
-        try{
-            return Date.valueOf(sc.nextLine());
-        }catch (Exception e){
-            return getDate(str);
-        }
 
-    }
 }

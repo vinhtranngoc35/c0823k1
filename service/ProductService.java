@@ -1,6 +1,7 @@
 package service;
 
 import model.Product;
+import model.Unit;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -72,10 +73,8 @@ public class ProductService {
         return products;
     }
 
-    public int findByIndex(int index) throws IOException {
-        if(index < 0) throw new IndexOutOfBoundsException("Khong vi tri nay");
-        int[] ints = new int[2];
-        return 1;
+    public Product findById(int id) {
+       return products.stream().filter(e -> e.getId() == id).findFirst().orElse(new Product());
     }
 
     private static void readData(){
@@ -95,6 +94,7 @@ public class ProductService {
                         Integer.parseInt(data[4]),
                         Date.valueOf(data[5])
                 );
+                product.setUnit(Unit.valueOf(data[6]));
                 product.setCategory(categoryService.findById(product.getCategoryId()));
                 products.add(product);
 
