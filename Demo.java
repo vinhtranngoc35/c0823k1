@@ -1,4 +1,5 @@
 import service.ProductService;
+import view.LoginView;
 import view.OrderView;
 import view.ProductView;
 
@@ -8,7 +9,7 @@ public class Demo {
 
 
     public static void main(String[] args) {
-        OrderView.printMenu();
+        LoginView.printMenu();
 
     }
 

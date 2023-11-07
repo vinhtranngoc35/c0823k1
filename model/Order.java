@@ -12,6 +12,10 @@ public class Order {
 
     private Status status;
 
+    private User user;
+
+    private int userId;
+
     private List<OrderDetail> orderDetails;
 
 
@@ -47,9 +51,25 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return id + "," + buyDate.toString() + "," + status;
+        return id + "," + buyDate.toString() + "," + status + "," + userId;
     }
 
     public BigDecimal getTotalPrice(){

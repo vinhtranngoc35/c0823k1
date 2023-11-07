@@ -3,7 +3,7 @@ package ultis;
 import java.sql.Date;
 import java.util.Scanner;
 
-public class AppUltis {
+public class AppUtil {
     static Scanner sc = new Scanner(System.in);
     public static int getNumber(String str) throws IndexOutOfBoundsException {
         System.out.println(str);

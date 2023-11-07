@@ -3,27 +3,25 @@ package view;
 import model.OrderDetail;
 import service.OrderService;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ultis.AppUltis.getNumber;
+import static ultis.AppUtil.getNumber;
 
 public class OrderView {
-     static OrderService orderService = new OrderService();
+    static OrderService orderService = new OrderService();
     public static void printMenu() {
         while (true) {
             System.out.println("Menu:");
             System.out.println("1. Tao moi don hang");
             System.out.println("2. Sua don hang");
             System.out.println("3. Xoa don hang");
-            System.out.println("4. Hien thi doanh thu");
-            System.out.println("5. Hien thi Don hang");
-            System.out.println("6. Thoat");
+            System.out.println("4. Hien thi Don hang");
+            System.out.println("5. Thoat");
             int choice = getNumber("Nhap vao lua chon", 1, 5);
             switch (choice) {
                 case 1 -> createOrder();
-                case 5 -> printOrders();
+                case 4 -> printOrders();
 //                case 3 -> updateProduct();
 //                case 4 -> deleteProduct();
                 default -> System.exit(0);
@@ -62,7 +60,7 @@ public class OrderView {
 
     private static void printOrders(){
         System.out.println("Id  | Buy Date | Status | Tong So Da Mua | Tong Tien");
-        for (var order: orderService.getOrders()) {
+        for (var order: orderService.getOrdersByUser()) {
 
             System.out.println(order.getId() + " | " + order.getBuyDate() + " | " + order.getStatus() + " | " + order.getOrderDetails().size() + " | " + order.getTotalPrice());
         }

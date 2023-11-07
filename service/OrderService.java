@@ -26,8 +26,30 @@ public class OrderService {
         readDataOrder();
     }
 
+    //admin
     public List<Order> getOrders() {
         return orders;
+    }
+    //user
+    public List<Order> getOrdersByUser(){
+        return orders.stream().filter(e -> e.getUserId() == LoginService.currentUser().getId()).collect(Collectors.toList());
+    }
+    public List<Order> getOrdersByStatus(Status status){
+        return orders.stream().filter(e -> e.getStatus() == status).collect(Collectors.toList());
+    }
+
+    public void changeOrderStatus(int id){
+//        for (var order: orders) {
+//            if(order.getId() == id){
+//                order.setStatus(Status.PAID);
+//                break;
+//            }
+//        }
+        orders.forEach(e -> {
+            if(e.getId() == id){
+                e.setStatus(Status.PAID);
+            }
+        });
     }
 
     public void createOrder(List<OrderDetail> orderDetails) {
@@ -39,6 +61,7 @@ public class OrderService {
         order.setBuyDate(Date.valueOf(LocalDate.now()));
         order.setStatus(Status.ORDER);
         order.setId(++currentIdOrder);
+        order.setUserId(LoginService.currentUser().getId());
         for (var orderDetail : orderDetails) {
             Product product = productService.findById(orderDetail.getProductId());
             orderDetail.setName(product.getName());
@@ -100,8 +123,9 @@ public class OrderService {
                 order.setId(Integer.parseInt(data[0]));
                 order.setBuyDate(Date.valueOf(data[1]));
                 order.setStatus(Status.valueOf(data[2]));
+                order.setUserId(Integer.parseInt(data[3]));
                 order.setOrderDetails(
-                        orderDetails.stream().filter(e -> e.getOrderId() == order.getId()).collect(Collectors.toList())
+                        orderDetails.stream().filter(orderDetail -> orderDetail.getOrderId() == order.getId()).collect(Collectors.toList())
                 );
                 orders.add(order);
                 line = reader.readLine();

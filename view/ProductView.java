@@ -5,10 +5,9 @@ import service.CategoryService;
 import service.ProductService;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.Scanner;
 
-import static ultis.AppUltis.*;
+import static ultis.AppUtil.*;
 
 // lấy data từ người dùng.
 public class ProductView {
@@ -17,7 +16,8 @@ public class ProductView {
     static CategoryService categoryService = new CategoryService();
 
     public static void printMenu() {
-        while (true) {
+        boolean flag =true;
+        while (flag) {
             System.out.println("Menu:");
             System.out.println("1. Hien thi danh sach san pham");
             System.out.println("2. Them moi san pham");
@@ -32,7 +32,7 @@ public class ProductView {
                 case 2 -> createProduct();
                 case 3 -> updateProduct();
                 case 4 -> deleteProduct();
-                default -> System.exit(0);
+                default -> flag = false;
             }
         }
     }
